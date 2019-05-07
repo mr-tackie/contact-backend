@@ -15,9 +15,9 @@ const typeDefs = gql`
 `;
 
 function getProfileInfo(user_id){
-    const headers = {'Authorization': 'Bearer '+process.env.AUTH0_TOKEN};
+    const headers = {'Authorization': 'Bearer '+process.env.AUTH0_MANAGEMENT_API_TOKEN};
     console.log(headers);
-    return fetch('https://graphql-tutorials.auth0.com/api/v2/users/'+user_id,{ headers: headers})
+    return fetch(process.env.AUTH0_DOMAIN + '/api/v2/users/'+user_id,{ headers: headers})
         .then(response => response.json())
 }
 
@@ -25,9 +25,10 @@ function getProfileInfo(user_id){
 const resolvers = {
     Query: {
         auth0: (parent, args, context) => {
+          // read the authorization header sent from the client
           const authHeaders = context.headers.authorization;
           const token = authHeaders.replace('Bearer ', '');
-          let issuer;
+          // decode the token to find the user_id
           try {
             const decoded = jwt.decode(token);
             const user_id = decoded.sub;
