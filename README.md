@@ -1,10 +1,14 @@
-# hasura-sample-remote-schema
+# auth0-hasura-remote-schema
 
 1. Schema:
 
 ```
+type auth0_profile {
+  email: String
+  picture: String
+}
 type Query {
-  hello:  String
+  auth0: auth0_profile
 }
 ```
 
@@ -12,4 +16,4 @@ type Query {
 
 3. Add as Remote Schema in Hasura GraphQL Engine.
 
-4. Go to GraphiQL tab, and try out `query { hello }` .
+4. Go to GraphiQL tab, and try out `query { auth0 { email picture } }` .
