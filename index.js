@@ -1,6 +1,7 @@
 const { ApolloServer } = require('apollo-server');
 const gql = require('graphql-tag');
 const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
 
 const typeDefs = gql`
   type auth0_profile {
@@ -13,20 +14,34 @@ const typeDefs = gql`
     }
 `;
 
+function getProfileInfo(user_id){
+    const headers = {'Authorization': 'Bearer '+process.env.AUTH0_TOKEN};
+    console.log(headers);
+    return fetch('https://graphql-tutorials.auth0.com/api/v2/users/'+user_id,{ headers: headers})
+        .then(response => response.json())
+}
+
+
 const resolvers = {
     Query: {
         auth0: (parent, args, context) => {
           const authHeaders = context.headers.authorization;
-          console.log(authHeaders);
-          var token = authHeaders.replace('Bearer ', '');
+          const token = authHeaders.replace('Bearer ', '');
           let issuer;
           try {
-            var decoded = jwt.decode(token);
-            issuer = decoded.iss;
-            return {email: '', picture: decoded.picture};
+            const decoded = jwt.decode(token);
+            const user_id = decoded.sub;
+            // make a rest api call to auth0
+            return getProfileInfo(user_id).then( function(resp) {
+              console.log(resp);
+              if (!resp) {
+                return null;
+              }
+              return {email: resp.email, picture: resp.picture};
+            });
           } catch(e) {
             console.log(e);
-            return "error"
+            return null;
           }
         }
     },

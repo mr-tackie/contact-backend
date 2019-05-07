@@ -3,6 +3,7 @@ dependencies:
   graphql: 14.1.1
   graphql-tag: 2.10.1
   jsonwebtoken: 8.5.1
+  node-fetch: 2.5.0
 packages:
   /@apollographql/apollo-tools/0.3.5:
     dependencies:
@@ -872,6 +873,12 @@ packages:
       node: 4.x || >=6.0.0
     resolution:
       integrity: sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
+  /node-fetch/2.5.0:
+    dev: false
+    engines:
+      node: 4.x || >=6.0.0
+    resolution:
+      integrity: sha512-YuZKluhWGJwCcUu4RlZstdAxr8bFfOVHakc1mplwHkk8J+tqM1Y5yraYvIUpeX8aY7+crCwiELJq7Vl0o0LWXw==
   /object-assign/4.1.1:
     dev: false
     engines:
@@ -1167,3 +1174,4 @@ specifiers:
   graphql: ^14.0.2
   graphql-tag: ^2.10.1
   jsonwebtoken: ^8.5.1
+  node-fetch: ^2.5.0
