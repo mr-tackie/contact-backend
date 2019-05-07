@@ -2,14 +2,19 @@ const { ApolloServer } = require('apollo-server');
 const gql = require('graphql-tag');
 
 const typeDefs = gql`
-  type Query {
-    profile:  String
-  }
+  type auth0_profile {
+      email: String
+      picture: String
+    }
+
+    type Query {
+      auth0: auth0_profile
+    }
 `;
 
 const resolvers = {
     Query: {
-        hello: (parent, args, context) => {
+        auth0: (parent, args, context) => {
           console.log(context);
           return "world";
         }
