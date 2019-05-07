@@ -1,5 +1,6 @@
 const { ApolloServer } = require('apollo-server');
 const gql = require('graphql-tag');
+const jwt = require('jsonwebtoken');
 
 const typeDefs = gql`
   type auth0_profile {
@@ -15,8 +16,18 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         auth0: (parent, args, context) => {
-          console.log(context);
-          return "world";
+          const authHeaders = context.headers.authorization;
+          console.log(authHeaders);
+          var token = authHeaders.replace('Bearer ', '');
+          let issuer;
+          try {
+            var decoded = jwt.decode(token);
+            issuer = decoded.iss;
+            return {email: '', picture: decoded.picture};
+          } catch(e) {
+            console.log(e);
+            return "error"
+          }
         }
     },
 };
