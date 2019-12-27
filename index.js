@@ -21,7 +21,7 @@ const resolvers = {
       console.log(context);
       
       if(args.username){
-        return "Hello from this side";
+        return getLinkFromUsername(args.username);
       }else{
         return null
       }
