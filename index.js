@@ -4,26 +4,34 @@ const jwt = require("jsonwebtoken");
 const fetch = require("node-fetch");
 
 const typeDefs = gql`
-  
+  type auth0_profile {
+      email: String
+      picture: String
+    }
 
-type user {
-  id: Int
-  first_name: String
-  last_name: String
-  twitter: String
-  twitter_url : String
-}
 
-type twitter_link{
-  link: String
+type Twitter{
+  twitter_link: String
   contact_id: Int
 }
 
     type Query {
-      get_twitter: twitter
+      auth0: auth0_profile
+      get_twitter: Twitter
     }
 
 `;
+
+function getProfileInfo(user_id) {
+  const headers = {
+    Authorization: "Bearer " + process.env.AUTH0_MANAGEMENT_API_TOKEN
+  };
+  console.log(headers);
+  return fetch(
+    "https://" + process.env.AUTH0_DOMAIN + "/api/v2/users/" + user_id,
+    { headers: headers }
+  ).then(response => response.json());
+}
 
 function getUserInfo(user_id) {
   const headers = {
@@ -38,8 +46,30 @@ function getUserInfo(user_id) {
 
 const resolvers = {
   Query: {
+    auth0: (parent, args, context) => {
+      // read the authorization header sent from the client
+      const authHeaders = context.headers.authorization;
+      const token = authHeaders.replace("Bearer ", "");
+      // decode the token to find the user_id
+      try {
+        const decoded = jwt.decode(token);
+        const user_id = decoded.sub;
+        // make a rest api call to auth0
+        return getProfileInfo(user_id).then(function(resp) {
+          console.log(resp);
+          if (!resp) {
+            return null;
+          }
+          return { email: resp.email, picture: resp.picture };
+        });
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
     get_twitter: (parent, args, context) => {
-      
+      console.log(parent);
+      return { contact_id: 1, twitter_link: "https://twitter.com/J_DOLAN" };
     }
   }
 };
