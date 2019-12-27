@@ -15,11 +15,6 @@ const getLinkFromUsername = (username) => {
 const resolvers = {
   Query: {
     get_twitter: (parent, args, context) => {
-      
-      console.log("Parent ==>" + parent);
-      console.log(args);
-      console.log(context);
-      
       if(args.username){
         return getLinkFromUsername(args.username);
       }else{
