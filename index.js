@@ -46,7 +46,6 @@ function getUserInfo(user_id) {
   ).then(response => response.json());
 }
 
-
 const resolvers = {
   Query: {
     auth0: (parent, args, context) => {
@@ -69,9 +68,15 @@ const resolvers = {
         console.log(e);
         return null;
       }
-    }, 
-    user: (parent, args, context) => {
+    },
+    get_user: (parent, args, context) => {
       
+      return {
+        first_name: "James",
+        last_name: "Dolan",
+        twitter: "J_DOLAN",
+        twitter_url: "https://twitter.com/J_DOLAN"
+      };
     }
   }
 };
