@@ -1,9 +1,32 @@
 const { ApolloServer } = require("apollo-server");
 const gql = require("graphql-tag");
+const graphql = require("graphql");
 
 const typeDefs = gql`
+
+    type Contact {
+      id: Int,
+      first_name: String
+      last_name: String
+      twitter: String
+      phone_numbers: [PhoneNumber],
+      emails: [Email]
+    }
+
+    type PhoneNumber{
+      id: Int
+      contact_id: Int
+      phone_number: String
+    }
+
+    type Email{
+      id: Int
+      contact_id: Int
+      email: String
+    }
+
     type Query {
-      get_twitter: String
+      get_contact_with_twitter: Contact
     }
 
 `;
@@ -14,10 +37,7 @@ const getLinkFromUsername = (username) => {
 
 const resolvers = {
   Query: {
-    get_twitter: (parent, args, context) => {
-      console.log(parent);
-      return "Hello from this side";
-    }
+    get_contact_with_twitter
   }
 };
 
