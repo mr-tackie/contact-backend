@@ -2,14 +2,6 @@ const { ApolloServer } = require("apollo-server");
 const gql = require("graphql-tag");
 
 const typeDefs = gql`
-    input Email{
-    email: String!
-    }
-
-    type Phone{
-    phone: String!
-    }
-    
     type Query {
       get_twitter(username: String): String
     }
