@@ -1,19 +1,16 @@
-# auth0-hasura-remote-schema
+# Twitter custom resolver
+A resolver to return a twitter profile url from a username
 
-1. Schema:
+## Installation
+Clone this repository using `git clone https://github.com/mr-tackie/contact-backend`. In the project directory, run the command `npm` install to install required dependencies
+
+## Usage
+Run `npm start` to start the Apollo server. The project will be available on `localhost:4000` by default unless set otherwise in your .env file
+
+### Schema:
 
 ```
-type auth0_profile {
-  email: String
-  picture: String
-}
 type Query {
-  auth0: auth0_profile
+  get_twitter: String
 }
 ```
-
-2. Click on **Show** *Live* at the top of the Glitch UI to get the URL.
-
-3. Add as Remote Schema in Hasura GraphQL Engine.
-
-4. Go to GraphiQL tab, and try out `query { auth0 { email picture } }` .
